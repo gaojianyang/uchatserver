@@ -38,12 +38,23 @@ public class UserDetailBO implements Serializable {
     private static final long serialVersionUID = 8073662434406951441L;
 
     @ApiModelProperty(value = "用户ID")
-    private String uid;
+    private long uid;
 
     @ApiModelProperty(value = "用户姓名")
     private String userName;
 
-    @ApiModelProperty(value = "用户密码")
-    private String password;
+    @ApiModelProperty(value = "手机号")
+    private String phone;
 
+    @ApiModelProperty(value = "头像")
+    private String avatar;
+
+    @ApiModelProperty(value = "简介")
+    private String description;
+
+    @ApiModelProperty(value = "绑定皮肤")
+    private long bindSkin;
+
+    @ApiModelProperty(value = "绑定对象")
+    private long bindPeer;
 }

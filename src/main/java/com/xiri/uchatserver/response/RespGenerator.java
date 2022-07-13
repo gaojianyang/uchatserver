@@ -8,7 +8,7 @@ public class RespGenerator {
      * @return
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public static BaseResponse returnOK(Object data) {
+    public  static <T> BaseResponse<T> returnOK(T data) {
         return new BaseResponse("200", "接口调用成功!", data);
     }
 
