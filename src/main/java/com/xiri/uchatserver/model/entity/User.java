@@ -1,17 +1,21 @@
 package com.xiri.uchatserver.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.time.LocalDate;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author gjy
@@ -48,6 +52,9 @@ public class User implements Serializable {
 
     @TableField("is_deleted")
     private Integer isDeleted;
+
+    @TableField("visible")
+    private Integer visible;
 
     @TableField("created_at")
     private LocalDate createdAt;

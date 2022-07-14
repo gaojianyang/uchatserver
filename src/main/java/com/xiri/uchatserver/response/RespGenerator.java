@@ -1,5 +1,7 @@
 package com.xiri.uchatserver.response;
 
+import com.xiri.uchatserver.config.BaseErrorInfoInterface;
+
 public class RespGenerator {
     /**
      * 接口调用成功时出参
@@ -21,6 +23,16 @@ public class RespGenerator {
      */
     public static BaseResponse<Object> returnError(String code, String message) {
         return new BaseResponse<Object>(code, message, null);
+    }
+    /**
+     * 调用失败
+     *
+     * @param errorInfo
+     *            错误返回码
+     * @return
+     */
+    public static BaseResponse<Object> returnError(BaseErrorInfoInterface errorInfo) {
+        return new BaseResponse<Object>(errorInfo.getResultCode(), errorInfo.getResultMsg(), null);
     }
 
     /**

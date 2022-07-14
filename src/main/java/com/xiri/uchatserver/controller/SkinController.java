@@ -17,13 +17,13 @@ public class SkinController {
     @ApiOperation(value = "获取皮肤详情信息")
     @GetMapping("/getProductDetail")
     @ApiImplicitParam(name = "sid", value = "皮肤id", paramType = "String")
-    public BaseResponse<SkinDetailBo> getProductDetail(@RequestParam(value = "sid") String sid) {
+    public BaseResponse<String> getProductDetail(@RequestParam(value = "sid") String sid) {
         return RespGenerator.returnOK("成功");
     }
 
     @ApiOperation(value = "获取皮肤列表信息")
     @PostMapping("/getSkinList")
-    public BaseResponse<List<SkinDetailBo>> getSkinList() {
+    public BaseResponse<String> getSkinList() {
         return RespGenerator.returnOK("成功");
     }
 

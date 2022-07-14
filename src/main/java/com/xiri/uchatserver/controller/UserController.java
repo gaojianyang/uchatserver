@@ -1,9 +1,11 @@
 package com.xiri.uchatserver.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.xiri.uchatserver.model.bo.UserDetailBO;
 import com.xiri.uchatserver.model.bo.UserLoginBO;
 import com.xiri.uchatserver.model.entity.User;
+import com.xiri.uchatserver.model.vo.GetUserVO;
 import com.xiri.uchatserver.model.vo.UpdateUserVO;
 import com.xiri.uchatserver.response.BaseResponse;
 import com.xiri.uchatserver.response.RespGenerator;
@@ -34,8 +36,8 @@ public class UserController {
 
     @ApiOperation(value = "获取用户列表信息")
     @PostMapping("/getUserList")
-    public BaseResponse<String> getUserList() {
-        return RespGenerator.returnOK("成功");
+    public BaseResponse<IPage<UserDetailBO>> getUserList(GetUserVO getUserVO) {
+        return RespGenerator.returnOK(userService.getUserList(getUserVO));
     }
 
     @ApiOperation(value = "登录")
