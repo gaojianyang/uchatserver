@@ -56,6 +56,8 @@ public class WebConfiguration implements WebMvcConfigurer {
         //排除拦截，除了注册登录(此时还没token)，其他都拦截
         excludePath.add("/userController/login");  //登录
         excludePath.add("/userController/register");     //注册
+        excludePath.add("/userController/getVerifyCode");     //获取验证码
+
         excludePath.add("/doc.html");     //swagger
         excludePath.add("/swagger-ui.html");     //swagger
         excludePath.add("/swagger-resources/**");     //swagger

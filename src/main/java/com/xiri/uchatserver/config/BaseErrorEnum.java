@@ -37,6 +37,9 @@ public enum BaseErrorEnum implements BaseErrorInfoInterface {
     USER_NOT_EXISTS("10010", "该用户不存在!"),
     USER_INVALID("401","当前登录信息已失效,请重新登录！"),
     PASSWORD_ERROR("10011", "密码错误"),
+    PHONE_HAS_REGISTER("10012", "该账号已注册"),
+    PHONE_REGISTER_ERROR("10013", "注册账号失败"),
+
     REQUIRED_ITEM_NULL("10018", "必传项为空！"),
     USER_NAME_LOCK("100002","该账号已被锁定!");
     /**

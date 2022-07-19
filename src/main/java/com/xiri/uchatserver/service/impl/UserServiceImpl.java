@@ -20,10 +20,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import static com.xiri.uchatserver.config.BaseErrorEnum.PHONE_REGISTER_ERROR;
 
 /**
  * <p>
@@ -74,50 +78,79 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     private final static Integer LOCKEDNUMBER = 3;
 
     @Override
-    public UserLoginBO login(String username, String password) {
+    public UserLoginBO login(String username, String password, HttpServletRequest request) {
 
         //判断该账户是否被锁定
         String errorNumber;
-        if(redisUtils.get("errorNumber")!=null){
+        if (redisUtils.get("errorNumber") != null) {
             errorNumber = redisUtils.get("errorNumber");
-        }else{
+        } else {
             errorNumber = "0";
         }
-        if(Integer.parseInt(errorNumber)>=LOCKEDNUMBER){
+        if (Integer.parseInt(errorNumber) >= LOCKEDNUMBER) {
             logger.info(username + "账户已被锁定");
             throw new BaseException(BaseErrorEnum.USER_NAME_LOCK);
         }
         //查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username",username);
+        queryWrapper.eq("username", username);
         User user = userMapper.selectOne(queryWrapper);
-        if(user==null){
+        if (user == null) {
             logger.info(username + "用户登录失败");
             throw new BaseException(BaseErrorEnum.USER_NOT_EXISTS);
-        }else if (!Objects.equals(user.getPwd(), password)){
+        } else if (!Objects.equals(user.getPwd(), password)) {
             //密码错误
-            Integer result=Integer.parseInt(errorNumber)+1;
+            Integer result = Integer.parseInt(errorNumber) + 1;
             errorNumber = result.toString();
-            if(redisUtils.get("errorNumber")!=null){
-                redisUtils.getAndSet("errorNumber",errorNumber);
-            }else{
-                redisUtils.set("errorNumber",errorNumber);
+            if (redisUtils.get("errorNumber") != null) {
+                redisUtils.getAndSet("errorNumber", errorNumber);
+            } else {
+                redisUtils.set("errorNumber", errorNumber);
             }
             throw new BaseException(BaseErrorEnum.PASSWORD_ERROR);
-        } else{
+        } else {
             UserDetailBO userDetailBO = new UserDetailBO();
-            BeanUtils.copyProperties(user,userDetailBO);
+            BeanUtils.copyProperties(user, userDetailBO);
             UserLoginBO userLoginBO = new UserLoginBO();
             userLoginBO.setUserDetailBO(userDetailBO);
             //包装token
-            String token= TokenUtils.sign(user);
+            String token = TokenUtils.sign(user);
             //token存入redis
-            redisUtils.set("token",token,30, TimeUnit.MINUTES);
+            redisUtils.set("token", token, 30, TimeUnit.MINUTES);
             userLoginBO.setToken(token);
             logger.info(username + "用户登录成功");
+            HttpSession session = request.getSession();
+            session.setAttribute("userName", username);
             return userLoginBO;
         }
     }
+
+    @Override
+    public String register(String phone, String password, String verifyCode) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phone);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user != null) {
+            throw new BaseException(BaseErrorEnum.PHONE_HAS_REGISTER);
+        } else {
+            User newUser = new User();
+            newUser.setPhone(phone);
+            newUser.setPwd(password);
+            int insert = userMapper.insert(newUser);
+            if (insert > 0) {
+                return "注册成功";
+            } else {
+                throw new BaseException(PHONE_REGISTER_ERROR);
+            }
+        }
+
+    }
+
+    @Override
+    public String getVerifyCode(String phone) {
+        return "发送成功";
+    }
+
     @Override
     public IPage<UserDetailBO> getUserList(GetUserVO getUserVO) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();

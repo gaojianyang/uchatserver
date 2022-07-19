@@ -7,6 +7,8 @@ import com.xiri.uchatserver.model.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xiri.uchatserver.model.vo.GetUserVO;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * 服务类
@@ -24,7 +26,24 @@ public interface IUserService extends IService<User> {
      * @param password
      * @return
      */
-    UserLoginBO login(String phone, String password);
+    UserLoginBO login(String phone, String password, HttpServletRequest request);
+    /**
+     * 注册
+     *
+     * @param phone
+     * @param password
+     * @return
+     */
+    String register(String phone, String password,String verifyCode);
+
+
+    /**
+     * 获取验证码
+     *
+     * @param phone
+     * @return
+     */
+    String getVerifyCode(String phone);
 
     /**
      * 分页查询用户信息
