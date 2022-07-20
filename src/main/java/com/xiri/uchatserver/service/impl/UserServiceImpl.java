@@ -138,6 +138,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             newUser.setPwd(password);
             int insert = userMapper.insert(newUser);
             if (insert > 0) {
+                logger.info(phone + "用户注册成功");
+
                 return "注册成功";
             } else {
                 throw new BaseException(PHONE_REGISTER_ERROR);

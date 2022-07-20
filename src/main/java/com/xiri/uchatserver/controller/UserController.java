@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "注册")
-    @GetMapping("/register")
+    @PostMapping("/register")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "String"),
             @ApiImplicitParam(name = "passWord", value = "密码", paramType = "String"),
