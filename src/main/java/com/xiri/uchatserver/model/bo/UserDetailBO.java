@@ -53,8 +53,8 @@ public class UserDetailBO implements Serializable {
     private String description;
 
     @ApiModelProperty(value = "绑定皮肤")
-    private long bindSkin;
+    private Long bindSkin;
 
     @ApiModelProperty(value = "绑定对象")
-    private long bindPeer;
+    private Long bindPeer;
 }

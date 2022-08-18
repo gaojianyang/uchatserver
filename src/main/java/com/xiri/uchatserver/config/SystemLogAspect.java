@@ -41,7 +41,7 @@ public class SystemLogAspect {
     @Resource
     private SyslogMapper logMapper;//日志 mapper
 
-    private String requestPath = null ; // 请求地址
+    private String requestPath = null; // 请求地址
     private long startTimeMillis = 0; // 开始时间
     private long endTimeMillis = 0; // 结束时间
     private String user = null; // 操作人
@@ -51,37 +51,40 @@ public class SystemLogAspect {
      * 注解的位置
      */
     @Pointcut("@annotation(com.xiri.uchatserver.config.OperationAnnotation)")
-    public void logPointCut() {}
+    public void logPointCut() {
+    }
 
     /**
      * @param joinPoint
      * @Description 前置通知  方法调用前触发   记录开始时间,从session中获取操作人
      */
-    @Before(value="logPointCut()")
-    public void before(JoinPoint joinPoint){
+    @Before(value = "logPointCut()")
+    public void before(JoinPoint joinPoint) {
         startTimeMillis = System.currentTimeMillis();
     }
+
     /**
      * @param joinPoint
-     * @Description 获取入参方法参数
      * @return
+     * @Description 获取入参方法参数
      */
     public Map<String, Object> getNameAndValue(JoinPoint joinPoint) {
         Map<String, Object> param = new HashMap<>();
         Object[] paramValues = joinPoint.getArgs();
-        String[] paramNames = ((CodeSignature)joinPoint.getSignature()).getParameterNames();
+        String[] paramNames = ((CodeSignature) joinPoint.getSignature()).getParameterNames();
         for (int i = 0; i < paramNames.length; i++) {
-            if(paramValues[i] instanceof Integer || paramValues[i] instanceof String) {
+            if (paramValues[i] instanceof Integer || paramValues[i] instanceof String) {
                 param.put(paramNames[i], paramValues[i]);
             }
         }
         return param;
     }
+
     /**
      * @param joinPoint
      * @Description 后置通知    方法调用后触发   记录结束时间 ,操作人 ,入参等
      */
-    @After(value="logPointCut()")
+    @After(value = "logPointCut()")
     public void after(JoinPoint joinPoint) {
         request = getHttpServletRequest();
         String targetName = joinPoint.getTarget().getClass().getName();
@@ -102,37 +105,41 @@ public class SystemLogAspect {
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 clazzs = method.getParameterTypes();
-                if (clazzs!=null&&clazzs.length == arguments.length
-                        &&method.getAnnotation(OperationAnnotation.class)!=null) {
+                if (clazzs != null && clazzs.length == arguments.length
+                        && method.getAnnotation(OperationAnnotation.class) != null) {
                     request = getHttpServletRequest();
-                    requestPath=request.getServletPath();
+                    requestPath = request.getServletPath();
                     HttpSession session = request.getSession();
-                    user = session.getAttribute("userName").toString();
+                    if (session.getAttribute("userName") != null)
+                        user = session.getAttribute("userName").toString();
+                    else user="空";
                     title = method.getAnnotation(OperationAnnotation.class).content();
                     action = method.getAnnotation(OperationAnnotation.class).action();
                     sysType = method.getAnnotation(OperationAnnotation.class).sysType();
                     opType = method.getAnnotation(OperationAnnotation.class).opType();
                     endTimeMillis = System.currentTimeMillis();
 
-                    Syslog log=new Syslog(user, requestPath,
-                            (endTimeMillis-startTimeMillis)+"ms",
-                            getNameAndValue(joinPoint).toString(), title, action,sysType,opType);
-                    System.out.println("增加参数："+log);
+                    Syslog log = new Syslog(user, requestPath,
+                            (endTimeMillis - startTimeMillis) + "ms",
+                            getNameAndValue(joinPoint).toString(), title, action, sysType, opType);
+                    System.out.println("增加参数：" + log);
                     logMapper.insert(log);
 //                    break;
                 }
             }
         }
     }
+
     /**
      * @Description: 获取request
      */
-    public HttpServletRequest getHttpServletRequest(){
+    public HttpServletRequest getHttpServletRequest() {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
-        ServletRequestAttributes sra = (ServletRequestAttributes)ra;
+        ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         return request;
     }
+
     /**
      * @param joinPoint
      * @return 环绕通知
@@ -141,6 +148,7 @@ public class SystemLogAspect {
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         return null;
     }
+
     /**
      * @param joinPoint
      * @Description 异常通知

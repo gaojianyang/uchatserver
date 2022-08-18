@@ -93,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         //查询条件
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("username", username);
+        queryWrapper.eq("phone", username);
         User user = userMapper.selectOne(queryWrapper);
         if (user == null) {
             logger.info(username + "用户登录失败");
