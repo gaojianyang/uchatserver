@@ -7,6 +7,7 @@ import com.xiri.uchatserver.config.BaseErrorEnum;
 import com.xiri.uchatserver.config.BaseException;
 import com.xiri.uchatserver.model.bo.UserDetailBO;
 import com.xiri.uchatserver.model.bo.UserLoginBO;
+import com.xiri.uchatserver.model.entity.Skin;
 import com.xiri.uchatserver.model.entity.User;
 import com.xiri.uchatserver.mapper.UserMapper;
 import com.xiri.uchatserver.model.vo.GetUserVO;
@@ -173,5 +174,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         page.setTotal(userIPage.getTotal());
 
         return page;
+    }
+
+    @Override
+    public UserDetailBO searchUserFromPhoneNumber(String phoneNumber) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("phone", phoneNumber);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            logger.info(phoneNumber + "用户查询失败");
+            throw new BaseException(BaseErrorEnum.RESOURCE_NOT_EXISTS);
+        }
+        UserDetailBO userDetailBO = new UserDetailBO();
+        BeanUtils.copyProperties(user, userDetailBO);
+        return userDetailBO;
     }
 }

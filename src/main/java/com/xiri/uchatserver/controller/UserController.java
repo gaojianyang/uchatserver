@@ -35,6 +35,11 @@ public class UserController {
     public BaseResponse<String> updateUserMessage(@RequestBody UpdateUserVO updateUserVO) {
         return RespGenerator.returnOK("成功");
     }
+    @ApiOperation(value = "修改用户信息")
+    @PostMapping("/updateUserMessage")
+    public BaseResponse<UserDetailBO> searchUserFromPhone(@RequestParam(value = "phone") String phone) {
+        return RespGenerator.returnOK(userService.searchUserFromPhoneNumber(phone));
+    }
 
     @ApiOperation(value = "获取用户列表信息")
     @PostMapping("/getUserList")

@@ -53,4 +53,7 @@ public interface IUserService extends IService<User> {
      */
     IPage<UserDetailBO> getUserList(GetUserVO getUserVO);
 
+
+
+    UserDetailBO searchUserFromPhoneNumber(String phoneNumber);
 }
