@@ -83,8 +83,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         //判断该账户是否被锁定
         String errorNumber;
-        if (redisUtils.get("errorNumber") != null) {
-            errorNumber = redisUtils.get("errorNumber");
+        if (redisUtils.get(username) != null) {
+            errorNumber = redisUtils.get(username);
+            logger.info(username + "账户已错误" + errorNumber + "次");
         } else {
             errorNumber = "0";
         }
@@ -103,10 +104,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             //密码错误
             Integer result = Integer.parseInt(errorNumber) + 1;
             errorNumber = result.toString();
-            if (redisUtils.get("errorNumber") != null) {
-                redisUtils.getAndSet("errorNumber", errorNumber);
+            if (redisUtils.get(username) != null) {
+                redisUtils.getAndSet(username, errorNumber);
             } else {
-                redisUtils.set("errorNumber", errorNumber);
+                redisUtils.set(username, errorNumber);
             }
             throw new BaseException(BaseErrorEnum.PASSWORD_ERROR);
         } else {
@@ -117,9 +118,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             //包装token
             String token = TokenUtils.sign(user);
             //token存入redis
-            redisUtils.set("token", token, 30, TimeUnit.MINUTES);
+//            redisUtils.set("token", token, 30, TimeUnit.MINUTES);
             userLoginBO.setToken(token);
-            logger.info(username + "用户登录成功");
+            logger.info(username + "用户登录成功 token:" + token);
             HttpSession session = request.getSession();
             session.setAttribute("userName", username);
             return userLoginBO;
@@ -146,7 +147,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
                 throw new BaseException(PHONE_REGISTER_ERROR);
             }
         }
-
     }
 
     @Override

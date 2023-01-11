@@ -81,7 +81,7 @@ public class TokenInterceptor implements HandlerInterceptor {
             return true;
         }
         response.setCharacterEncoding("utf-8");
-        String token = request.getHeader("token");
+        String token = request.getHeader("Authorization");
         if (token != null) {
 //            boolean result= TokenUtils.verify(token);
 //            if (result){
@@ -90,7 +90,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 //            }
             //改造
             System.out.println("想要的token" + token);
-            if (redisUtils.get("token").equals(token)) {
+            if (TokenUtils.verify(token)) {
                 System.out.println("通过拦截器");
                 return true;
             } else {

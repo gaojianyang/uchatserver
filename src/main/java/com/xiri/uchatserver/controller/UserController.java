@@ -35,8 +35,8 @@ public class UserController {
     public BaseResponse<String> updateUserMessage(@RequestBody UpdateUserVO updateUserVO) {
         return RespGenerator.returnOK("成功");
     }
-    @ApiOperation(value = "修改用户信息")
-    @PostMapping("/updateUserMessage")
+    @ApiOperation(value = "搜索用户")
+    @PostMapping("/searchUser")
     public BaseResponse<UserDetailBO> searchUserFromPhone(@RequestParam(value = "phone") String phone) {
         return RespGenerator.returnOK(userService.searchUserFromPhoneNumber(phone));
     }
@@ -61,6 +61,7 @@ public class UserController {
 
     @ApiOperation(value = "注册")
     @PostMapping("/register")
+    @OperationAnnotation(content="用户注册",sysType=1,opType=0,action="注册接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "String"),
             @ApiImplicitParam(name = "passWord", value = "密码", paramType = "String"),

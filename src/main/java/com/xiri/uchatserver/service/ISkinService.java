@@ -23,4 +23,8 @@ public interface ISkinService extends IService<Skin> {
 
     SkinDetailBo uploadSkin(UploadSkinVO uploadSkinVO);
 
+    SkinDetailBo updateSkin(UploadSkinVO uploadSkinVO);
+
+    String downloadSkin(long id);
+
 }

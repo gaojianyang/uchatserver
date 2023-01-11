@@ -24,22 +24,27 @@ public class SkinController {
     @ApiOperation(value = "获取皮肤详情信息")
     @GetMapping("/getProductDetail")
     @ApiImplicitParam(name = "sid", value = "皮肤id", paramType = "String")
-    public BaseResponse<String> getProductDetail(@RequestParam(value = "sid") String sid) {
-        return RespGenerator.returnOK("成功");
+    public BaseResponse<SkinDetailBo> getProductDetail(@RequestParam(value = "sid") long sid) {
+        return RespGenerator.returnOK(skinService.getSkinDetailById(sid));
     }
 
     @ApiOperation(value = "获取皮肤列表信息")
-    @PostMapping("/getSkinList")
+    @GetMapping("/getSkinList")
     public BaseResponse<String> getSkinList() {
         return RespGenerator.returnOK("成功");
     }
 
-    @ApiOperation(value = "获取皮肤列表信息")
+    @ApiOperation(value = "上传皮肤")
     @PostMapping("/uploadSkin")
     public BaseResponse<SkinDetailBo> uploadSkin(@RequestBody UploadSkinVO uploadSkinVO) {
         return RespGenerator.returnOK(skinService.uploadSkin(uploadSkinVO));
     }
 
+    @ApiOperation(value = "下载皮肤")
+    @PostMapping("/downloadSkin")
+    public BaseResponse<String> downloadSkin(@RequestParam(value = "sid") long sid) {
+        return RespGenerator.returnOK(skinService.downloadSkin(sid));
+    }
 //    @ApiOperation(value = "删除产品")
 //    @PostMapping("/deleteProductList")
 //    public BaseResponse<Integer> deleteProductList(@RequestBody DeleteProductVO deleteProductVO) {

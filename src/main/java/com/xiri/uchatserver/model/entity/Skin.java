@@ -65,4 +65,7 @@ public class Skin implements Serializable {
 
     @TableField("skinname")
     private String skinname;
+
+
+
 }
