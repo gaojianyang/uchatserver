@@ -28,10 +28,10 @@ public class Skin implements Serializable {
     private Long sid;
 
     @TableField("skindata")
-    private String skindata;
+    private String skinData;
 
     @TableField("authorid")
-    private Long authorid;
+    private Long authorId;
 
     @TableField("createdate")
     private LocalDate createdate;
@@ -43,28 +43,28 @@ public class Skin implements Serializable {
     private String descript;
 
     @TableField("createscreenwidth")
-    private Integer createscreenwidth;
+    private Integer createWidth;
 
     @TableField("createscreenheight")
-    private Integer createscreenheight;
+    private Integer createHeight;
 
     @TableField("price")
     private Float price;
 
     @TableField("despath")
-    private String despath;
+    private String desPaths;
 
     @TableField("skinstatus")
     private Integer skinstatus;
 
     @TableField("datatype")
-    private Integer datatype;
+    private Integer dataType;
 
     @TableField("changetype")
-    private Integer changetype;
+    private Integer changeType;
 
     @TableField("skinname")
-    private String skinname;
+    private String skinName;
 
 
 

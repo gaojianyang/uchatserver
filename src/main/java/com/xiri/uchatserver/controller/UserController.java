@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "登录")
-    @GetMapping("/login")
+    @PostMapping("/login")
     @OperationAnnotation(content="用户登录",sysType=1,opType=0,action="登录接口")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "phone", value = "手机号", paramType = "String"),

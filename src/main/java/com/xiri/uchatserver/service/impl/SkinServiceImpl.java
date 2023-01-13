@@ -3,6 +3,7 @@ package com.xiri.uchatserver.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xiri.uchatserver.config.BaseErrorEnum;
 import com.xiri.uchatserver.config.BaseException;
+import com.xiri.uchatserver.mapper.SkindownloadcountMapper;
 import com.xiri.uchatserver.mapper.UserMapper;
 import com.xiri.uchatserver.model.bo.SkinDetailBo;
 import com.xiri.uchatserver.model.entity.Skin;
@@ -41,7 +42,8 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
     private static final Log logger = LogFactory.getLog(SkinServiceImpl.class);
     @Resource
     private SkinMapper skinMapper;
-    @Autowired
+
+    @Resource
     private ISkindownloadcountService skindownloadcountService;
 
     @Override
@@ -66,14 +68,17 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
     @Override
     public SkinDetailBo uploadSkin(UploadSkinVO uploadSkinVO) {
         Skin skin = new Skin();
-        skin.setSkindata(uploadSkinVO.getSkinData());
-        skin.setCreatescreenwidth(uploadSkinVO.getCWidth());
-        skin.setCreatescreenheight(uploadSkinVO.getCHeight());
-        skin.setAuthorid(uploadSkinVO.getAuthorId());
-        skin.setSkinname(uploadSkinVO.getSkinName());
+        skin.setSkinData(uploadSkinVO.getSkinData());
+        skin.setCreateWidth(uploadSkinVO.getCreateWidth());
+        skin.setCreateHeight(uploadSkinVO.getCreateHeight());
+        skin.setAuthorId(uploadSkinVO.getAuthorId());
+        skin.setSkinName(uploadSkinVO.getSkinName());
         skin.setPrice(uploadSkinVO.getPrice());
         skin.setCreatedate(LocalDate.now());
         skin.setUpdatedate(skin.getCreatedate());
+        skin.setDesPaths(uploadSkinVO.getDesPaths());
+
+
         int result = skinMapper.insert(skin);
         if (result > 0) {
             logger.info("插入皮肤" + result + " id" + skin.getSid());
@@ -94,7 +99,7 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
         Skin skin = skinMapper.selectOne(queryWrapper);
         if (skin != null) {
             if (StringUtils.hasText(uploadSkinVO.getSkinData()))
-                skin.setSkindata(uploadSkinVO.getSkinData());
+                skin.setSkinData(uploadSkinVO.getSkinData());
             if (uploadSkinVO.getPrice() != 0)
                 skin.setPrice(uploadSkinVO.getPrice());
             skin.setUpdatedate(LocalDate.now());
@@ -117,7 +122,7 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
         Skin skin = skinMapper.selectOne(queryWrapper);
         if (skin != null) {
             skindownloadcountService.countAdd(id);
-            return skin.getSkindata();
+            return skin.getSkinData();
         } else {
             throw new BaseException(BaseErrorEnum.RESOURCE_NOT_EXISTS);
         }

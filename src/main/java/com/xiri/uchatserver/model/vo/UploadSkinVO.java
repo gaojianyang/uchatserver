@@ -10,13 +10,15 @@ public class UploadSkinVO {
     private long sid;
     private String skinData;
     private long authorId;
-    private int cWidth;
-    private int cHeight;
+    private int createWidth;
+    private int createHeight;
     private float price;
-    private String desPath;
+    private String desPaths;
     private String skinName;
     private int dataType;
     private int changeType;
+    private String descript;
+    private long referId;
 
 
 }
