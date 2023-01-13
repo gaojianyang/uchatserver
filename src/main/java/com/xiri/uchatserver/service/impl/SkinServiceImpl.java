@@ -12,9 +12,11 @@ import com.xiri.uchatserver.model.entity.User;
 import com.xiri.uchatserver.model.vo.UploadSkinVO;
 import com.xiri.uchatserver.service.ISkinService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xiri.uchatserver.service.ISkindownloadcountService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -39,6 +41,8 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
     private static final Log logger = LogFactory.getLog(SkinServiceImpl.class);
     @Resource
     private SkinMapper skinMapper;
+    @Autowired
+    private ISkindownloadcountService skindownloadcountService;
 
     @Override
     public SkinDetailBo getSkinDetailById(long id) {
@@ -104,7 +108,6 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
             logger.info(sid + "皮肤更新失败");
             throw new BaseException(BaseErrorEnum.RESOURCE_NOT_EXISTS);
         }
-
     }
 
     @Override
@@ -113,6 +116,7 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
         queryWrapper.eq("sid", id);
         Skin skin = skinMapper.selectOne(queryWrapper);
         if (skin != null) {
+            skindownloadcountService.countAdd(id);
             return skin.getSkindata();
         } else {
             throw new BaseException(BaseErrorEnum.RESOURCE_NOT_EXISTS);

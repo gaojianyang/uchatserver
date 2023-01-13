@@ -45,6 +45,8 @@ public class SkinController {
     public BaseResponse<String> downloadSkin(@RequestParam(value = "sid") long sid) {
         return RespGenerator.returnOK(skinService.downloadSkin(sid));
     }
+
+
 //    @ApiOperation(value = "删除产品")
 //    @PostMapping("/deleteProductList")
 //    public BaseResponse<Integer> deleteProductList(@RequestBody DeleteProductVO deleteProductVO) {

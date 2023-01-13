@@ -10,4 +10,6 @@ public class PageParam {
 
     @ApiModelProperty(value = "每页显示条数", required = true)
     private Integer pageSize = 10;
+
+
 }
