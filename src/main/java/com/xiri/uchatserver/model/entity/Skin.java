@@ -1,17 +1,23 @@
 package com.xiri.uchatserver.model.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+
 import java.time.LocalDate;
+
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableField;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author gjy
@@ -27,7 +33,7 @@ public class Skin implements Serializable {
     @TableId(value = "sid", type = IdType.AUTO)
     private Long sid;
 
-    @TableField("skindata")
+    @TableField(value = "skindata")
     private String skinData;
 
     @TableField("authorid")
@@ -51,8 +57,8 @@ public class Skin implements Serializable {
     @TableField("price")
     private Float price;
 
-    @TableField("despath")
-    private String desPaths;
+    @TableField(value = "despath", typeHandler = JacksonTypeHandler.class)
+    private ArrayList<String> desPaths;
 
     @TableField("skinstatus")
     private Integer skinstatus;
@@ -65,7 +71,6 @@ public class Skin implements Serializable {
 
     @TableField("skinname")
     private String skinName;
-
 
 
 }

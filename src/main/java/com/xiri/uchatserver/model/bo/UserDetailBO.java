@@ -38,7 +38,7 @@ public class UserDetailBO implements Serializable {
     private static final long serialVersionUID = 8073662434406951441L;
 
     @ApiModelProperty(value = "用户ID")
-    private long uid;
+    private long id;
 
     @ApiModelProperty(value = "用户姓名")
     private String userName;

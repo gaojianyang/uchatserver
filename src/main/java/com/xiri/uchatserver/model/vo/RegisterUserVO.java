@@ -1,6 +1,5 @@
 package com.xiri.uchatserver.model.vo;
 
-import com.xiri.uchatserver.model.entity.PageParam;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

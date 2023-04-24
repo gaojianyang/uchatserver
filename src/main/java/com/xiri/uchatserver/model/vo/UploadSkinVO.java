@@ -3,6 +3,8 @@ package com.xiri.uchatserver.model.vo;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
+import java.util.ArrayList;
+
 @Data
 @ApiModel("上传皮肤传入VO类")
 public class UploadSkinVO {
@@ -13,7 +15,7 @@ public class UploadSkinVO {
     private int createWidth;
     private int createHeight;
     private float price;
-    private String desPaths;
+    private ArrayList<String> desPaths;
     private String skinName;
     private int dataType;
     private int changeType;
