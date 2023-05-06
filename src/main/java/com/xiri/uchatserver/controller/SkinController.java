@@ -30,7 +30,7 @@ public class SkinController {
 
     @ApiOperation(value = "获取皮肤列表信息")
     @GetMapping("/getSkinList")
-    public BaseResponse<String> getSkinList() {
+    public BaseResponse<String> getSkinList(@RequestParam(value = "type") int type,@RequestParam(value = "page")int page,@RequestParam(value = "pageLine")int pageLine) {
         return RespGenerator.returnOK("成功");
     }
 

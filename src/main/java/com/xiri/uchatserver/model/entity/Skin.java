@@ -57,8 +57,10 @@ public class Skin implements Serializable {
     @TableField("price")
     private Float price;
 
-    @TableField(value = "despath", typeHandler = JacksonTypeHandler.class)
-    private ArrayList<String> desPaths;
+    @TableField(value = "despath")
+    private String desPath;
+    @TableField(value = "coverpath")
+    private String coverPath;
 
     @TableField("skinstatus")
     private Integer skinstatus;

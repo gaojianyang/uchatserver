@@ -18,14 +18,14 @@ public class SkinDetailBo implements Serializable {
     private long sid;
 
     @ApiModelProperty(value = "皮肤名称")
-    private String skinname;
+    private String skinName;
 
     @ApiModelProperty(value = "价格")
     private float price;
 
     @ApiModelProperty(value = "预览图片地址")
-    private String despath;
+    private String desPath;
 
     @ApiModelProperty(value = "数据类型")
-    private  Integer datatype;
+    private  Integer dataType;
 }

@@ -1,11 +1,14 @@
 package com.xiri.uchatserver.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiri.uchatserver.config.BaseErrorEnum;
 import com.xiri.uchatserver.config.BaseException;
 import com.xiri.uchatserver.mapper.SkindownloadcountMapper;
 import com.xiri.uchatserver.mapper.UserMapper;
 import com.xiri.uchatserver.model.bo.SkinDetailBo;
+import com.xiri.uchatserver.model.bo.UserDetailBO;
 import com.xiri.uchatserver.model.entity.Skin;
 import com.xiri.uchatserver.mapper.SkinMapper;
 
@@ -23,6 +26,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.xiri.uchatserver.config.BaseErrorEnum.INSERT_WRONG;
@@ -76,7 +80,8 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
         skin.setPrice(uploadSkinVO.getPrice());
         skin.setCreatedate(LocalDate.now());
         skin.setUpdatedate(skin.getCreatedate());
-        skin.setDesPaths(uploadSkinVO.getDesPaths());
+        skin.setDesPath(uploadSkinVO.getDesPath());
+        skin.setCoverPath(uploadSkinVO.getCoverPath());
 
 
         int result = skinMapper.insert(skin);
@@ -127,5 +132,27 @@ public class SkinServiceImpl extends ServiceImpl<SkinMapper, Skin> implements IS
             throw new BaseException(BaseErrorEnum.RESOURCE_NOT_EXISTS);
         }
 
+    }
+
+    @Override
+    public IPage<SkinDetailBo> getSkinListByType(int type, int currentpage, int pageLine) {
+        QueryWrapper<Skin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("datatype", type);
+        Page<Skin> p = new Page<>(currentpage, pageLine);
+        IPage<Skin> userIPage = skinMapper.selectPage(p, queryWrapper);
+        IPage<SkinDetailBo> page = new Page<>();
+        List<SkinDetailBo> skinDetailBOList = new ArrayList<>();
+        for (Skin skin : userIPage.getRecords()) {
+            SkinDetailBo skinDetailBO = new SkinDetailBo();
+            BeanUtils.copyProperties(skin, skinDetailBO);
+            skinDetailBOList.add(skinDetailBO);
+        }
+        page.setRecords(skinDetailBOList);
+        page.setCurrent(userIPage.getCurrent());
+        page.setPages(userIPage.getPages());
+        page.setSize(userIPage.getSize());
+        page.setTotal(userIPage.getTotal());
+
+        return page;
     }
 }

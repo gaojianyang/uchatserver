@@ -15,7 +15,8 @@ public class UploadSkinVO {
     private int createWidth;
     private int createHeight;
     private float price;
-    private ArrayList<String> desPaths;
+    private String desPath;
+    private String coverPath;
     private String skinName;
     private int dataType;
     private int changeType;
